@@ -1,0 +1,26 @@
+{
+  "inputFileFormat" : "tsv",
+  "inputDir": "/input",
+  "outputDir": "/output",
+  "outputFilename": "dhcp-log",
+  "fields": [{
+    "name" : "ts",
+    "type" : "double",
+    "index": "0"
+  },
+    {
+      "name" : "uid",
+      "type" : "string",
+      "index" : "1"
+    },
+    {
+      "name" : "id.orig_h" ,
+      "type" : "string",
+      "index" : "2"
+    },
+    {
+      "name" : "id.orig_p",
+      "type" : "int64",
+      "index" : "3"
+    }]
+}

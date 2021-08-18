@@ -1,0 +1,8 @@
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/ParquetConverter.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/util/SchemaUtil.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/mapper/TsvParser.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/mapper/JsonParser.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/util/ConfParser.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/util/Conf.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/util/Field.java
+/home/arjunlal/ParquetConverter/src/main/java/com/converter/mapper/CsvParser.java
