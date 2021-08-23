@@ -6,6 +6,7 @@ import org.apache.hadoop.io.Text;
 
 import org.apache.hadoop.mapreduce.Mapper;
 
+import org.apache.parquet.Log;
 import org.apache.parquet.column.values.dictionary.DictionaryValuesWriter;
 import org.apache.parquet.example.data.GroupFactory;
 import org.apache.parquet.example.data.Group;
@@ -13,19 +14,21 @@ import org.apache.parquet.example.data.simple.SimpleGroupFactory;
 import org.apache.parquet.schema.MessageTypeParser;
 
 //import com.converter.util.LogUtil;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import java.io.IOException;
 
 public class CsvParser extends Mapper<LongWritable, Text, Void, Group>{
-    private static Logger LOGGER = LoggerFactory.getLogger(CsvParser.class);
+
     final String DELIMITER = ",";
     final String TAB = "\t";
     final String COMMA = ",";
 
+    public static Logger logger = LogManager.getLogger(CsvParser.class);
+
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-        LOGGER.info("Map job started");
+        logger.info("CSV Map job started");
         String line = value.toString();
         String[] columns = line.split(DELIMITER);//array of values
         for(int i=0;i<columns.length; i++){

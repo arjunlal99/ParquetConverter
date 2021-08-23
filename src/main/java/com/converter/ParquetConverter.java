@@ -22,8 +22,8 @@ import com.converter.util.Conf;
 import com.converter.util.ConfParser;
 import com.converter.util.SchemaUtil;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 public class ParquetConverter {
 
@@ -34,14 +34,13 @@ public class ParquetConverter {
     public static Logger logger = LogManager.getLogger(ParquetConverter.class);
 
     public static void main(String [] args) throws Exception{
-        logger.info("This is main info");
         ConfParser confParser = new ConfParser(args[0]);
-
         Configuration conf = new Configuration();
         String schema = SchemaUtil.generateSchema((args[0]));
-        System.out.println(schema);
+
         conf.set("fields", SchemaUtil.fieldsToString(confParser.conf.fields));
         conf.set("schema", schema);
+        logger.info(schema);
 
         Job job = Job.getInstance(conf, "ParquetConverter");
         job.getConfiguration().set("mapreduce.output.basename", confParser.conf.outputFilename);
