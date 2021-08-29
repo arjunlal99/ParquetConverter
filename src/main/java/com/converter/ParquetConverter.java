@@ -25,6 +25,8 @@ import com.converter.util.SchemaUtil;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 
+import com.converter.exceptions.ExpectedArgumentNotFoundException;
+
 public class ParquetConverter {
 
     private final static Class TSV = TsvParser.class;
@@ -34,19 +36,26 @@ public class ParquetConverter {
     public static Logger logger = LogManager.getLogger(ParquetConverter.class);
 
     public static void main(String [] args) throws Exception{
-        ConfParser confParser = new ConfParser(args[0]);
+
+        try{
+            if (args.length == 0) throw new ExpectedArgumentNotFoundException();
+        }catch (ExpectedArgumentNotFoundException e){
+            logger.error("ExpectedArgumentNotFoundException : Path to configuration file expected as first argument - Correct usage is hadoop jar <.jar file> <main.class> </path/to/conf_file>");
+        }
+
+        Conf configurationFile = ConfParser.ConfParser(args[0]);
         Configuration conf = new Configuration();
         String schema = SchemaUtil.generateSchema((args[0]));
 
-        conf.set("fields", SchemaUtil.fieldsToString(confParser.conf.fields));
+        conf.set("fields", SchemaUtil.fieldsToString(configurationFile.fields));
         conf.set("schema", schema);
         logger.info(schema);
 
         Job job = Job.getInstance(conf, "ParquetConverter");
-        job.getConfiguration().set("mapreduce.output.basename", confParser.conf.outputFilename);
+        job.getConfiguration().set("mapreduce.output.basename", configurationFile.outputFilename);
         job.setJarByClass(ParquetConverter.class);
 
-        job.setMapperClass(confParser.conf.inputFileFormat.equals("tsv") ? TSV : (confParser.conf.inputFileFormat.equals("csv") ? CSV : JSON));
+        job.setMapperClass(configurationFile.inputFileFormat.equals("tsv") ? TSV : (configurationFile.inputFileFormat.equals("csv") ? CSV : JSON));
         job.setNumReduceTasks(0);
         job.setOutputKeyClass(Void.class);
         job.setOutputKeyClass(Group.class);
@@ -55,8 +64,8 @@ public class ParquetConverter {
         ExampleOutputFormat.setSchema(job, MessageTypeParser.parseMessageType(schema));
         ExampleOutputFormat.setCompression(job, CompressionCodecName.UNCOMPRESSED);
 
-        FileInputFormat.addInputPath(job, new Path(confParser.conf.inputDir));
-        FileOutputFormat.setOutputPath(job, new Path(confParser.conf.outputDir));
+        FileInputFormat.addInputPath(job, new Path(configurationFile.inputDir));
+        FileOutputFormat.setOutputPath(job, new Path(configurationFile.outputDir));
 
         System.exit(job.waitForCompletion(true) ? 0: 1);
 
