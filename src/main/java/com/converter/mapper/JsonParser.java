@@ -28,10 +28,8 @@ public class JsonParser extends Mapper<LongWritable, Text, Void, Group>{
     private static final Logger logger = LogManager.getLogger(JsonParser.class);
 
     public void map (LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-        logger.info("JSON Map job started");
 
         String json = value.toString();
-
         json = json.replace("{", "");
         json = json.replace("}", "");
         String [] jsonFields = json.split(",");

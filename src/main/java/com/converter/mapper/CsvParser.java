@@ -28,7 +28,7 @@ public class CsvParser extends Mapper<LongWritable, Text, Void, Group>{
     public static Logger logger = LogManager.getLogger(CsvParser.class);
 
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-        logger.info("CSV Map job started");
+
         String line = value.toString();
         String[] columns = line.split(DELIMITER);//array of values
         for(int i=0;i<columns.length; i++){

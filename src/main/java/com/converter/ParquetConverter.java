@@ -7,7 +7,6 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 
-import org.apache.parquet.Log;
 import org.apache.parquet.example.data.Group;
 import org.apache.parquet.hadoop.example.ExampleOutputFormat;
 import org.apache.parquet.hadoop.metadata.CompressionCodecName;
@@ -17,6 +16,8 @@ import org.apache.parquet.schema.MessageTypeParser;
 import com.converter.mapper.CsvParser;
 import com.converter.mapper.TsvParser;
 import com.converter.mapper.JsonParser;
+
+import com.converter.mapper.MapperClassFactory;
 
 import com.converter.util.Conf;
 import com.converter.util.ConfParser;
@@ -55,10 +56,10 @@ public class ParquetConverter {
         job.getConfiguration().set("mapreduce.output.basename", configurationFile.outputFilename);
         job.setJarByClass(ParquetConverter.class);
 
-        job.setMapperClass(configurationFile.inputFileFormat.equals("tsv") ? TSV : (configurationFile.inputFileFormat.equals("csv") ? CSV : JSON));
+        job.setMapperClass(new MapperClassFactory().createMapperClass(configurationFile.inputFileFormat).getMapperClass());
         job.setNumReduceTasks(0);
         job.setOutputKeyClass(Void.class);
-        job.setOutputKeyClass(Group.class);
+        job.setOutputValueClass(Group.class);
 
         job.setOutputFormatClass(ExampleOutputFormat.class);
         ExampleOutputFormat.setSchema(job, MessageTypeParser.parseMessageType(schema));

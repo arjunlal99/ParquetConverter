@@ -27,7 +27,6 @@ public class TsvParser extends Mapper<LongWritable, Text, Void, Group>{
     public static Logger logger = LogManager.getLogger(TsvParser.class);
 
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-        logger.info("TSV Map job started");
 
         String line = value.toString();
         String[] columns = line.split(DELIMITER);//array of values
