@@ -9,10 +9,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.converter.util.Field;
 import com.converter.util.Conf;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
+
 import java.io.File;
 import java.io.IOException;
 
 public class SchemaUtil {
+
+    public static Logger logger = LogManager.getLogger(SchemaUtil.class);
 
     /*
         Function to generate schema using Configuration object passed from main function
@@ -30,13 +35,13 @@ public class SchemaUtil {
             schema = schema + "}";
             return schema;
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            logger.error("JsonMappingException: Jackson cannot create an instance of the class - this happens if the class is abstract of it is an interface");
             return null;
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            logger.error("JsonProcessingException");
             return null;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException : Failure during reading, writing or searching file");
             return null;
         }
     }

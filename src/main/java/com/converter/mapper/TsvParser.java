@@ -13,6 +13,9 @@ import org.apache.parquet.example.data.simple.SimpleGroupFactory;
 
 import org.apache.parquet.schema.MessageTypeParser;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
+
 import java.io.IOException;
 
 public class TsvParser extends Mapper<LongWritable, Text, Void, Group>{
@@ -20,6 +23,8 @@ public class TsvParser extends Mapper<LongWritable, Text, Void, Group>{
     final String DELIMITER = "\t";
     final String TAB = "\t";
     final String COMMA = ",";
+
+    public static Logger logger = LogManager.getLogger(TsvParser.class);
 
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException{
 

@@ -13,8 +13,8 @@ import org.apache.parquet.example.data.simple.SimpleGroupFactory;
 
 import org.apache.parquet.schema.MessageTypeParser;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,9 +28,8 @@ public class JsonParser extends Mapper<LongWritable, Text, Void, Group>{
     private static final Logger logger = LogManager.getLogger(JsonParser.class);
 
     public void map (LongWritable key, Text value, Context context) throws IOException, InterruptedException{
-        logger.info("This is info");
-        String json = value.toString();
 
+        String json = value.toString();
         json = json.replace("{", "");
         json = json.replace("}", "");
         String [] jsonFields = json.split(",");
